@@ -4,7 +4,7 @@
     "weight": "checkered",
     "entrances": [[4,-1],[10, 6]],
     "exits": [[-1,8]],
-    "generator": "recur",
+    "generator": "kruskal",
     "solver": "recur",
     "solverEntranceIndex": 0,
     "visualise": true,
