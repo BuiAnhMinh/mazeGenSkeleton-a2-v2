@@ -5,7 +5,7 @@
     "entrances": [[4,-1],[10, 6]],
     "exits": [[-1,8]],
     "generator": "recur",
-    "solver": "recur",
+    "solver": "dijkstra",
     "solverEntranceIndex": 0,
     "visualise": true,
     "mazeFromFile": true,
