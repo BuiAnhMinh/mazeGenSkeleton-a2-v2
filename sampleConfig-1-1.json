@@ -4,11 +4,11 @@
     "weight": "checkered",
     "entrances": [[3,-1]],
     "exits": [[-1,3]],
-    "generator": "recur",
-    "solver": "recur",
+    "generator": "kruskal",
+    "solver": "dijkstra",
     "solverEntranceIndex": 0,
     "visualise": true,
     "mazeFromFile": true,
     "mazeFileName": "sampleMaze01.txt",
-    "fileOutput": "sampleTaskA-recSolver-Maze1.png"
+    "fileOutput": "Testing1.png"
 }
