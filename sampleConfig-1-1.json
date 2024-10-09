@@ -8,7 +8,6 @@
     "solver": "recur",
     "solverEntranceIndex": 0,
     "visualise": true,
-    "mazeFromFile": true,
-    "mazeFileName": "sampleMaze01.txt",
-    "fileOutput": "Testing1.png"
+    "mazeFromFile": false,
+    "fileOutput": "haha.png"
 }

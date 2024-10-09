@@ -25,11 +25,24 @@ class DijkstraSolver:
         # Exit found and used by the solver
         self.m_exitUsed = None
 
+    class ComparableCoordinates:
+        """
+        A wrapper class for Coordinates that compares based on distance.
+        This is needed because Coordinates cannot be directly compared in a heapq.
+        """
+        def __init__(self, distance, coordinates):
+            self.distance = distance
+            self.coordinates = coordinates
+
+        def __lt__(self, other):
+            # Compare based on distance only, as required for the priority queue
+            return self.distance < other.distance
+
     def solveMaze(self, maze: Maze, entrance: Coordinates):
         # Initialize the priority queue (min-heap)
         pq = []
         # Push the entrance to the priority queue with distance 0
-        heapq.heappush(pq, (0, entrance))
+        heapq.heappush(pq, DijkstraSolver.ComparableCoordinates(0, entrance))
 
         # Store the entrance used
         self.m_entranceUsed = entrance
@@ -46,7 +59,9 @@ class DijkstraSolver:
         # Start exploring from the entrance
         while pq:
             # Pop the cell with the smallest distance
-            current_dist, curr_cell = heapq.heappop(pq)
+            current = heapq.heappop(pq)
+            current_dist = current.distance
+            curr_cell = current.coordinates
 
             # Mark the cell as visited
             visited.add(curr_cell)
@@ -68,7 +83,7 @@ class DijkstraSolver:
                 if neighbor not in dist or new_dist < dist[neighbor]:
                     dist[neighbor] = new_dist
                     predecessors[neighbor] = curr_cell
-                    heapq.heappush(pq, (new_dist, neighbor))
+                    heapq.heappush(pq, DijkstraSolver.ComparableCoordinates(new_dist, neighbor))
 
             # Count cells explored
             self.m_cellsExplored += 1
@@ -82,6 +97,23 @@ class DijkstraSolver:
                 curr = predecessors.get(curr, None)
             # Reverse the path to get it from entrance to exit
             self.m_solverPath = path[::-1]
-
-
-	
+            
+    def compare_coordinates(self, coord1, coord2):
+        """
+        Compares two Coordinates objects based on their x and y values.
+        Returns:
+        -1 if coord1 < coord2
+         0 if coord1 == coord2
+         1 if coord1 > coord2
+        """
+        if coord1.x < coord2.x:
+            return -1
+        elif coord1.x > coord2.x:
+            return 1
+        else:  # x values are equal, compare y values
+            if coord1.y < coord2.y:
+                return -1
+            elif coord1.y > coord2.y:
+                return 1
+            else:
+                return 0  # Both x and y are equal
