@@ -6,7 +6,7 @@
     "exits": [[-1, 6], [10,5]],
     "generator": "recur",
     "solver": "recur",
-    "strategy": "brute-force",
+    "strategy": "greedy",
     "mazeFromFile": false,
     "visualise": true,
     "fileOutput": "testTaskB.png"

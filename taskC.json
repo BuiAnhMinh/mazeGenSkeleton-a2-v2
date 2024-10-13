@@ -1,0 +1,14 @@
+{
+    "rowNum": 5,
+    "colNum": 5,
+    "weight": "checkered",
+    "entrances": [[0, -1], [4, -1]],
+    "exits": [[0, 5], [4, 5]],
+    "generator": "recur",
+    "solver": "recur",
+    "strategy": "greedy",
+    "mazeFromFile": true,
+    "mazeFileName": "taskC.txt",
+    "visualise": true,
+    "fileOutput": "lol.png"
+}
