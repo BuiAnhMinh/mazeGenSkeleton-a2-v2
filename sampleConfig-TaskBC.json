@@ -9,5 +9,5 @@
     "strategy": "greedy",
     "mazeFromFile": false,
     "visualise": true,
-    "fileOutput": "testTaskB.png"
+    "fileOutput": "hehe.png"
 }

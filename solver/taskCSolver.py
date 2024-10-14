@@ -7,121 +7,94 @@
 # -------------------------------------------------------------------
 
 
+import heapq
+from typing import List, Tuple
 from maze.util import Coordinates
 from maze.maze import Maze
-from typing import List
-import heapq
-
-class ComparableCoordinates:
-    """
-    A wrapper class for Coordinates that allows comparison based on distance.
-    This is necessary because Coordinates cannot be directly compared in a heapq.
-    """
-    def __init__(self, distance: int, coordinates: Coordinates):
-        self.distance = distance
-        self.coordinates = coordinates
-
-    def __lt__(self, other):
-        # Compare based on distance for the priority queue
-        return self.distance < other.distance
-
-    def __eq__(self, other):
-        # Equality check based on distance and coordinates
-        return self.distance == other.distance and self.coordinates == other.coordinates
-
-    def __hash__(self):
-        # Allows the object to be used in sets and dictionaries
-        return hash((self.distance, self.coordinates))
-
-    def __repr__(self):
-        # String representation for debugging
-        return f"ComparableCoordinates(distance={self.distance}, coordinates={self.coordinates})"
 
 class greedySolver:
     def __init__(self):
-        self.paths = []  # To store the paths from entrances to exits
-        self.used_cells = set()  # Track the cells that have been used in paths
-        self.total_cost = 0  # Total cost of paths found
-        self.all_solved = False  # Initialize the all_solved flag
+        self.entrance_exit_paths = {}
+        self.total_explored_cells = 0
+        self.all_solved = False
+        self.total_cost = 0
 
-    def heuristic(self, current: Coordinates, goal: Coordinates) -> int:
-        # Use Manhattan distance as a heuristic
-        return abs(current.getRow() - goal.getRow()) + abs(current.getCol() - goal.getCol())
+    class ComparableCoordinates:
+        """
+        A wrapper class for Coordinates that compares based on total cost (distance + heuristic).
+        """
+        def __init__(self, total_cost: int, coordinates: Coordinates):
+            self.total_cost = total_cost
+            self.coordinates = coordinates
+
+        def __lt__(self, other):
+            return self.total_cost < other.total_cost
+
+        def __repr__(self):
+            return f"ComparableCoordinates(total_cost={self.total_cost}, coordinates={self.coordinates})"
 
     def solveMaze(self, maze: Maze, entrances: List[Coordinates], exits: List[Coordinates]) -> bool:
-        all_paths_found = True  # Flag to check if all paths are found
+        self.entrance_exit_paths.clear()
+        used_cells = set()
+        total_cost = 0
+        all_paths_found = True
 
-        for entrance, exit in zip(entrances, exits):
-            path = self.find_path(maze, entrance, exit)
+        for i in range(len(entrances)):
+            entrance = entrances[i]
+            exit = exits[i]
+            path, cost = self._greedy_search(maze, entrance, exit, used_cells)
+
             if path:
-                self.paths.append(path)
-                self.total_cost += self.calculate_path_cost(maze, path)
-                # Mark cells in this path as used
-                for cell in path:
-                    self.used_cells.add(cell)
+                self.entrance_exit_paths[(entrance, exit)] = path
+                total_cost += cost
+                used_cells.update(path)
             else:
-                all_paths_found = False  # If any path can't be found, mark it as false
-                break  # Stop processing if any path is not found
+                all_paths_found = False
+                break
 
-        # Set the all_solved flag based on whether all paths were found
         self.all_solved = all_paths_found
+        self.total_cost = total_cost
         return all_paths_found
 
-    def find_path(self, maze: Maze, start: Coordinates, goal: Coordinates) -> List[Coordinates]:
-        # Priority queue for the greedy search
-        queue = []
-        heapq.heappush(queue, ComparableCoordinates(0, start))  # Use the wrapper class
-        came_from = {start: None}
-        cost_so_far = {start: 0}
+    def _greedy_search(self, maze: Maze, start: Coordinates, goal: Coordinates, used_cells: set) -> Tuple[List[Coordinates], int]:
+        pq = []
+        dist = {start: 0}
+        predecessors = {}
+        heapq.heappush(pq, self.ComparableCoordinates(0 + self._manhattan_distance(start, goal), start))
 
-        while queue:
-            current = heapq.heappop(queue)  # Get the ComparableCoordinates object
-            curr_coordinates = current.coordinates
+        while pq:
+            current = heapq.heappop(pq)
+            current_cost = dist[current.coordinates]
+            curr_cell = current.coordinates
 
-            if curr_coordinates == goal:
-                return self.reconstruct_path(came_from, start, goal)
+            if curr_cell == goal:
+                return self._reconstruct_path(predecessors, curr_cell), current_cost
 
-            for neighbor in maze.neighbours(curr_coordinates):
-                if neighbor in self.used_cells or maze.hasWall(curr_coordinates, neighbor):
-                    continue  # Skip cells that are already used or have walls
+            for neighbor in maze.neighbours(curr_cell):
+                if neighbor in used_cells or maze.hasWall(curr_cell, neighbor):
+                    continue
 
-                new_cost = cost_so_far[curr_coordinates] + maze.edgeWeight(curr_coordinates, neighbor)
-                if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                    cost_so_far[neighbor] = new_cost
-                    priority = new_cost + self.heuristic(neighbor, goal)
-                    heapq.heappush(queue, ComparableCoordinates(priority, neighbor))  # Use the wrapper class
-                    came_from[neighbor] = curr_coordinates
+                new_cost = current_cost + maze.edgeWeight(curr_cell, neighbor)
 
-        return None  # No valid path was found
+                if neighbor not in dist or new_cost < dist[neighbor]:
+                    dist[neighbor] = new_cost
+                    predecessors[neighbor] = curr_cell
+                    heapq.heappush(pq, self.ComparableCoordinates(new_cost + self._manhattan_distance(neighbor, goal), neighbor))
 
-    def reconstruct_path(self, came_from, start, goal) -> List[Coordinates]:
-        # Reconstruct the path from start to goal
-        current = goal
+        return [], 0
+
+    def _manhattan_distance(self, start, goal):
+        return abs(start.getRow() - goal.getRow()) + abs(start.getCol() - goal.getCol())
+
+    def _reconstruct_path(self, predecessors: dict, current: Coordinates) -> List[Coordinates]:
         path = []
-        while current != start:
+        while current:
             path.append(current)
-            current = came_from[current]
-        path.append(start)
-        path.reverse()  # Reverse the path to go from start to goal
-        return path
-
-    def calculate_path_cost(self, maze: Maze, path: List[Coordinates]) -> int:
-        """
-        Calculate the total cost of the path using the edge weights in the maze.
-        """
-        cost = 0
-        for i in range(len(path) - 1):
-            cost += maze.edgeWeight(path[i], path[i + 1])
-        return cost
+            current = predecessors.get(current, None)
+        return path[::-1]
 
     def cellsExplored(self) -> int:
-        """
-        Returns the number of unique cells explored during the search.
-        """
-        return len(self.used_cells)
+        return self.total_explored_cells
 
     def totalPathCost(self) -> int:
-        """
-        Returns the total cost of all paths found.
-        """
         return self.total_cost
