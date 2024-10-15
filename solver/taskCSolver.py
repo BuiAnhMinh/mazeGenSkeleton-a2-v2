@@ -54,6 +54,7 @@ class greedySolver:
 
         self.all_solved = all_paths_found
         self.total_cost = total_cost
+        print(f"Total path cost: {self.total_cost}")
         return all_paths_found
 
     def _greedy_search(self, maze: Maze, start: Coordinates, goal: Coordinates, used_cells: set) -> Tuple[List[Coordinates], int]:
