@@ -50,6 +50,7 @@ class greedySolver:
                 used_cells.update(path)
             else:
                 all_paths_found = False
+                print(f"Can't find path")
                 break
 
         self.all_solved = all_paths_found

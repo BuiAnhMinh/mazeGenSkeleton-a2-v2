@@ -67,6 +67,7 @@ class bruteForceSolver:
                 used_cells.update(path)  # Mark these cells as used
             else:
                 all_paths_found = False
+                print(f"Can't find path")
                 break  # If any path can't be found, stop the process
 
         self.all_solved = all_paths_found

@@ -1,0 +1,12 @@
+{
+    "rowNum": 5,
+    "colNum": 5,
+    "weight": "random",
+    "entrances": [[0, -1]],
+    "exits": [[-1, 4]],
+    "generator": "recur",
+    "solver": "recur",
+    "strategy": "brute-force",
+    "mazeFromFile": false,
+    "visualise": false
+}

@@ -1,0 +1,13 @@
+{
+    "rowNum": 5,
+    "colNum": 5,
+    "weight": "checkered",
+    "entrances": [[0, -1], [4, -1]],
+    "exits": [[-1, 4], [5, 4]],
+    "generator": "recur",
+    "solver": "recur",
+    "strategy": "brute-force",
+    "mazeFromFile": false,
+    "visualise": true,
+    "fileOutput": "5x5_2_checkered.png"
+}

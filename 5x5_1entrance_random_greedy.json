@@ -1,0 +1,13 @@
+{
+    "rowNum": 5,
+    "colNum": 5,
+    "weight": "random",
+    "entrances": [[0, -1]],
+    "exits": [[-1, 4]],
+    "generator": "recur",
+    "solver": "recur",
+    "strategy": "greedy",
+    "mazeFromFile": false,
+    "visualise": true,
+    "fileOutput": "5x5_1_random.png"
+}

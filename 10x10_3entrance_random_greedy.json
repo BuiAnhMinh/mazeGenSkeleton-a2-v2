@@ -1,0 +1,13 @@
+{
+    "rowNum": 10,
+    "colNum": 10,
+    "weight": "random",
+    "entrances": [[0, -1], [9, -1], [4, -1]],
+    "exits": [[-1, 10], [10, 10], [5, 10]],
+    "generator": "recur",
+    "solver": "recur",
+    "strategy": "greedy",
+    "mazeFromFile": false,
+    "visualise": true,
+    "fileOutput": "10x10_3_random.png"
+}
