@@ -8,6 +8,5 @@
     "solver": "recur",
     "strategy": "greedy",
     "mazeFromFile": false,
-    "visualise": true,
-    "fileOutput": "5x5_1_random.png"
+    "visualise": false
 }

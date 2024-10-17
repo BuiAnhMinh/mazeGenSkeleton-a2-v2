@@ -8,7 +8,6 @@
     "solver": "recur",
     "strategy": "brute-force",
     "mazeFromFile": false,
-    "visualise": true,
-    "fileOutput": "10x10_1_checkered.png"
+    "visualise": false
 }
 
