@@ -88,15 +88,23 @@ class MazeReader():
                     # Update the walls between cells
                     for col in range(len(walls)):
                         if walls[col] == 0:
-                            maze.removeWall(Coordinates(row, col), Coordinates(row, col + 1))
-
+                            # Retrieve existing Coordinates instances
+                            cell1 = maze.m_cells.get((row, col))
+                            cell2 = maze.m_cells.get((row, col + 1))
+                            if cell1 and cell2:
+                                maze.removeWall(cell1, cell2)
+                            
                 # Even lines represent horizontal walls
                 else:
                     walls = lineInfo
                     for col in range(len(walls)):
                         if walls[col] == 0:
-                            maze.removeWall(Coordinates(row, col), Coordinates(row + 1, col))
-        
+                            # Retrieve existing Coordinates instances
+                            cell1 = maze.m_cells.get((row, col))
+                            cell2 = maze.m_cells.get((row + 1, col))
+                            if cell1 and cell2:
+                                maze.removeWall(cell1, cell2)
+                            
         print("Cell walls updated.")
 
 
