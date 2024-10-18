@@ -62,10 +62,12 @@ class bruteForceSolver:
             path, cost = self._dijkstra(maze, entrance, exit, used_cells)
             
             if path:
+                # print(f"Path found from {entrance} to {exit}: {path}, Cost: {cost}")
                 self.entrance_exit_paths[(entrance, exit)] = path
                 total_cost += cost
                 used_cells.update(path)  # Mark these cells as used
             else:
+                # print(f"No path found from {entrance} to {exit}")
                 all_paths_found = False
                 print(f"Can't find path")
                 break  # If any path can't be found, stop the process
@@ -90,6 +92,7 @@ class bruteForceSolver:
             current = heapq.heappop(pq)
             current_dist = current.distance
             curr_cell = current.coordinates
+            # print(f"Exploring {curr_cell} with distance {current_dist}")
 
             if curr_cell == goal:  # Exit found, stop and construct path
                 return self._reconstruct_path(predecessors, curr_cell), current_dist
@@ -97,12 +100,14 @@ class bruteForceSolver:
             # Explore neighbors
             for neighbor in maze.neighbours(curr_cell):
                 if neighbor in used_cells or maze.hasWall(curr_cell, neighbor):
+                    # print(f"Skipping neighbor {neighbor}: already used or blocked by a wall")
                     continue  # Skip if cell is already used or there is a wall
 
                 new_dist = current_dist + maze.edgeWeight(curr_cell, neighbor)
 
                 # Update shortest distance if a better path is found
                 if neighbor not in dist or new_dist < dist[neighbor]:
+                    # print(f"Updating neighbor {neighbor}: new shortest distance {new_dist}")
                     dist[neighbor] = new_dist
                     predecessors[neighbor] = curr_cell
                     heapq.heappush(pq, self.ComparableCoordinates(new_dist, neighbor))
@@ -115,6 +120,7 @@ class bruteForceSolver:
         """
         path = []
         while current:
+            # print(f"Reconstructing path, adding {current}")
             path.append(current)
             current = predecessors.get(current, None)
         return path[::-1]  # Reverse the path to go from start to goal
