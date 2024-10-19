@@ -7,7 +7,6 @@
     "generator": "recur",
     "solver": "recur",
     "strategy": "greedy",
-    "mazeFromFile": false,
-    "visualise": true,
-    "fileOutput": "10x10_3_random.png"
+    "mazeFromFile": true,
+    "mazeFileName": "10x10_random_maze1.txt"
 }

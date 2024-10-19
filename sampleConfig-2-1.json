@@ -9,6 +9,6 @@
     "strategy": "greedy",
     "visualise": true,
     "mazeFromFile": true,
-    "mazeFileName": "10x10_checkered_maze1.txt",
+    "mazeFileName": "10x10nowall.txt",
     "fileOutput": "hehe.png"
 }

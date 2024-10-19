@@ -1,13 +1,12 @@
 {
     "rowNum": 10,
     "colNum": 10,
-    "weight": "random",
+    "weight": "checkered",
     "entrances": [[0, -1], [9, -1], [4, -1]],
-    "exits": [[-1, 9], [10, 9], [5, 9]],
+    "exits": [[0, 10], [4, 10], [9, 10]], 
     "generator": "recur",
     "solver": "recur",
     "strategy": "brute-force",
-    "mazeFromFile": false,
-    "visualise": true,
-    "fileOutput": "10x10_3_random.png"
+    "mazeFromFile": true,
+    "mazeFileName": "10x10_checkered_maze1.txt"
 }

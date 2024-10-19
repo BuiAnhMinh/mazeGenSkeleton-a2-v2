@@ -7,7 +7,6 @@
     "generator": "recur",
     "solver": "recur",
     "strategy": "brute-force",
-    "mazeFromFile": false,
-    "visualise": true,
-    "fileOutput": "10x10_3_checkered_right_side_exits.png"
+    "mazeFromFile": true,
+    "mazeFileName": "10x10_checkered_maze2.txt"
 }

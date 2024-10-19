@@ -13,33 +13,28 @@ import random
 
 # reference : https://www.geeksforgeeks.org/kruskals-minimum-spanning-tree-algorithm-greedy-algo-2/
 class Edge:
-    """
-    Represents an edge in the graph, consisting of two vertices and a weight.
-    """
+    #edge in maze
     def __init__(self):
         self.edges = []
     
     def addEdge(self, u, v, weight):
-        """Add an edge between two vertices with a given weight."""
+        #add edge of 2 vertices with weight
         self.edges.append((u, v, weight))
 
 class DisjointSet:
-    """
-    Represents the disjoint-set (union-find) data structure.
-    """
+    #disjoint set DS
     def __init__(self, n):
-        # Initialize parent and rank arrays
-        self.parent = list(range(n))  # Each vertex is initially its own parent
-        self.rank = [0] * n  # Rank is used to keep track of the tree depth
+        # initialize parent
+        self.parent = list(range(n))  # each vertex is each own parent
+        self.rank = [0] * n  #rank to keep track of tree depth
     
     def find(self, u):
-        """Find the representative of the set containing u (with path compression)."""
+        #find representative of set with path compression
         if self.parent[u] != u:
-            self.parent[u] = self.find(self.parent[u])  # Path compression
+            self.parent[u] = self.find(self.parent[u])  # path compression
         return self.parent[u]
     
     def union(self, u, v):
-        """Union by rank, merges the sets containing u and v."""
         root_u = self.find(u)
         root_v = self.find(v)
         
@@ -53,57 +48,50 @@ class DisjointSet:
                 self.rank[root_u] += 1
 
 class KruskalMazeGenerator:
-    """
-    Kruskal's algorithm maze generator with weighted edges, excluding outer walls from the edge list.
-    """
-    
+    #kruskal with weighted graph
     def generateMaze(self, maze: Maze):
-        graph = Edge()  # Graph to store the edges
-        cells = maze.getCoords()  # All the cells (vertices) in the maze
+        graph = Edge()  # store the edge
+        cells = maze.getCoords()  #get the coord of all the vertices
         num_cells = len(cells)
         
-        # Map cell coordinates to an index for the DisjointSet (since it uses integers)
+        #map cell coordinates to disjoinset
         cell_index = {cell: idx for idx, cell in enumerate(cells)}
         
-        # Add walls (edges) between neighboring cells, but skip outer wall edges
+        # add wall between neighors (exclude outer wall)
         for cell in cells:
             neighbors = maze.neighbours(cell)
             for neighbor in neighbors:
-                if maze.hasEdge(cell, neighbor):  # Ensure an edge exists
-                    if not self.isOuterWall(cell, neighbor, maze):  # Skip outer walls
-                        weight = maze.edgeWeight(cell, neighbor)  # Get edge weight
+                if maze.hasEdge(cell, neighbor):  # ensure edge exists
+                    if not self.isOuterWall(cell, neighbor, maze):  # skip outer wall
+                        weight = maze.edgeWeight(cell, neighbor)  # get edge weight
                         graph.addEdge(cell, neighbor, weight)
 
-        # Initialize disjoint sets for all cells
+        # initialize disjoinset
         disjoint_set = DisjointSet(num_cells)
 
-        # Sort the edges based on their weights (for the weighted approach)
-        graph.edges.sort(key=lambda edge: edge[2])  # Sort by the weight
+        # sort the edge based on weight
+        graph.edges.sort(key=lambda edge: edge[2]) 
 
-        # Process each edge in sorted order (Kruskal's algorithm)
+        # process in sorted order
         for edge in graph.edges:
             u, v, weight = edge
             u_idx = cell_index[u]
             v_idx = cell_index[v]
 
-            # If u and v are not in the same set, remove the wall between them
+            #if u and v not in the same set, remove wall
             if disjoint_set.find(u_idx) != disjoint_set.find(v_idx):
-                maze.removeWall(u, v)  # Remove the wall between u and v
-                disjoint_set.union(u_idx, v_idx)  # Merge the sets
+                maze.removeWall(u, v)  # remove the wall between u and v
+                disjoint_set.union(u_idx, v_idx)  # merge the sets
 
         return maze
     
     def isOuterWall(self, u: Coordinates, v: Coordinates, maze: Maze) -> bool:
-        """
-        Checks if the edge between two cells u and v is part of the outer wall.
-        The outer walls are those that are on the boundaries of the maze.
-        """
-        width = maze.colNum()  # Number of columns in the maze
-        height = maze.rowNum()  # Number of rows in the maze
+        #check if edge is outer wall
+        width = maze.colNum()  
+        height = maze.rowNum()  
 
-        # u or v should only be considered on the outer wall if it is not connected to a valid cell inside the maze
         if (u.getRow() == -1 or u.getRow() == height or v.getRow() == -1 or v.getRow() == height) or \
         (u.getCol() == -1 or u.getCol() == width or v.getCol() == -1 or v.getCol() == width):
-            return True  # This means it's on the outermost boundary (invalid)
+            return True  # on the outer boundary (invalid)
         
-        return False  # Otherwise, it is an inner wall that should be considered for removal
+        return False  # on inner wall that should be considered for removal
