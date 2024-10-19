@@ -8,5 +8,6 @@
     "solver": "recur",
     "strategy": "greedy",
     "mazeFromFile": true,
-    "mazeFileName": "10x10_random_maze2.txt"
+    "mazeFileName": "10x10_random_maze2.txt",
+    "visualise": false
 }

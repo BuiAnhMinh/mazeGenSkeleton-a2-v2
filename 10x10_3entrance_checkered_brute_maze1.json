@@ -8,5 +8,6 @@
     "solver": "recur",
     "strategy": "brute-force",
     "mazeFromFile": true,
-    "mazeFileName": "10x10_checkered_maze1.txt"
+    "mazeFileName": "10x10_checkered_maze1.txt",
+    "visualise": false
 }

@@ -8,5 +8,6 @@
     "solver": "recur",
     "strategy": "greedy",
     "mazeFromFile": false,
-    "mazeFileName": "10x10_checkered_maze1.txt"
+    "mazeFileName": "10x10_checkered_maze1.txt",
+    "visualise": false
 }
