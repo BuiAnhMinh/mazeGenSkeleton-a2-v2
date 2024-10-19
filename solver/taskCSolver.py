@@ -41,10 +41,7 @@ class greedySolver:
             return f"ComparableCoordinates(total_cost={self.total_cost}, coordinates={self.coordinates})"
 
     def solveMaze(self, maze: Maze, entrances: List[Coordinates], exits: List[Coordinates]) -> bool:
-        """
-        Solves the maze by finding non-overlapping paths for each entrance-exit pair using a greedy approach.
-        Ensures that no cell is reused across different paths, and the total cost of all paths is minimized.
-        """
+        # solve maze by finding non-overlapping paths for each entrance-exit pair using a greedy approach.
         # clear paths and reset state
         self.entrance_exit_paths.clear()
         used_cells = set()  # track cells used by any path
