@@ -96,13 +96,6 @@ class DijkstraSolver:
             self.m_solverPath = path[::-1]
             
     def compare_coordinates(self, coord1, coord2):
-        """
-        Compares two Coordinates objects based on their x and y values.
-        Returns:
-        -1 if coord1 < coord2
-         0 if coord1 == coord2
-         1 if coord1 > coord2
-        """
         if coord1.x < coord2.x:
             return -1
         elif coord1.x > coord2.x:

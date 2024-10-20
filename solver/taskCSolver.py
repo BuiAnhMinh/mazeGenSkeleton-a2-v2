@@ -12,10 +12,6 @@ from maze.util import Coordinates
 from maze.maze import Maze
 
 class greedySolver:
-    """
-    Solver class implementing a greedy approach to find non-overlapping paths between
-    entrance-exit pairs in a maze.
-    """
     def __init__(self):
         # dictionary to store paths for each entrance-exit pair
         self.entrance_exit_paths = {}

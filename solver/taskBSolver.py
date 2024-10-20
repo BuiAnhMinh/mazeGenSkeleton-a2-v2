@@ -108,9 +108,6 @@ class bruteForceSolver:
         return [], 0  # return empty path and 0 cost if no valid path found
 
     def _reconstruct_path(self, predecessors: dict, current: Coordinates) -> List[Coordinates]:
-        """
-        Reconstructs the path from the goal back to the start using the predecessors map.
-        """
         path = []
         while current:
             # print(f"Reconstructing path, adding {current}")
